@@ -1,4 +1,5 @@
 /data
+/cleaned_data
 
 # VSCode
 .vscode/*
