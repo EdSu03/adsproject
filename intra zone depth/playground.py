@@ -299,4 +299,4 @@ class TripCoordinateEstimation:
 # Example usage
 if __name__ == "__main__":
     app = TripCoordinateEstimation(num_zones=8)
-    app.run(trip_id=0)
+    app.run()
