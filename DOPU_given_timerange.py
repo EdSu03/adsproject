@@ -5,7 +5,7 @@ from datetime import datetime, time
 #Run this cell to get ONE parquet file of ALL cleaned data stored in the folder all_cleaned_data.
 
 def get_cleaned_df():
-    folder_path = "data/"
+    folder_path = "cleaned_data/"
     
     os.makedirs("all_cleaned_data", exist_ok=True)
     
