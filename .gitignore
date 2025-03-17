@@ -179,3 +179,4 @@ cython_debug/
 
 # Graphs
 *.graphml
+/intra zone depth/nyc_roads_map_with_speeds.png
