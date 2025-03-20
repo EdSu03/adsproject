@@ -70,7 +70,7 @@ def DOPU_given_one_timerange(df, zone, time, timerange, isDropoff=True):
     
     ref_date = datetime.combine(datetime.today(), time)
     #remove date from datetime object
-    df_zone["time"] = df_zone["tpep_dropoff_datetime"].dt.time if isDropoff else df_zone["tpep_pickup_datetime"].dt.time
+    df_zone["time"] = df_zone["DropoffDatetime"].dt.time if isDropoff else df_zone["PickupDatetime"].dt.time
     
     start = (ref_date - timerange).time()
         
@@ -81,7 +81,7 @@ def DOPU_given_one_timerange(df, zone, time, timerange, isDropoff=True):
     df_filtered = df_zone[(df_zone["time"] >= start) & (df_zone["time"] <= end)] if (start < end) else df_zone[(df_zone["time"] >= start) | (df_zone["time"] <= end)]
     
     #sum all dropoff/pickups
-    dropoffs_per_day = df_filtered.groupby(df_filtered["tpep_dropoff_datetime"].dt.date).size()
+    dropoffs_per_day = df_filtered.groupby(df_filtered["DropoffDatetime"].dt.date).size()
     
     #return mean dropoffs/pickups
     return int(dropoffs_per_day.mean()) if not dropoffs_per_day.empty else 0
