@@ -1,7 +1,7 @@
-/data
-/cleaned_data
-/all_cleaned_data
-/all_cleaned_data_2020
+/data*
+/cleaned_data*
+/all_cleaned_data*
+
 
 # VSCode
 .vscode/*
