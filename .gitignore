@@ -1,6 +1,7 @@
 /data
 /cleaned_data
 /all_cleaned_data
+/all_cleaned_data_2020
 
 # VSCode
 .vscode/*
