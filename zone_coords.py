@@ -28,10 +28,10 @@ def get_coords_as_dict() -> dict[str, Coords]: # returns a dictionary to map (x,
     df = get_df()
     
     # Remove all columns but zone, x and y:
-    df = df.drop(['Unnamed: 0', 'OBJECTID', 'Shape_Leng','Shape_Area', 'LocationID', 'borough'], axis=1)
+    df = df.drop(['Unnamed: 0', 'OBJECTID', 'Shape_Leng','Shape_Area', 'zone', 'borough'], axis=1)
     
     
     # Set zone to index (necessary for to_dict to recognize zone as the key)
-    df = df.set_index('zone')
+    df = df.set_index('LocationID')
     
     return df.T.to_dict()
