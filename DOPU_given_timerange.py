@@ -20,6 +20,24 @@ def get_cleaned_df():
     
     df.to_parquet("all_cleaned_data/all_cleaned_data.parquet", index=False)
 
+def get_combined_cleaned_one_month_df():
+    folder_path = "cleaned_data/"
+
+    os.makedirs("all_cleaned_data", exist_ok=True)
+
+    parquet_files = [
+        f for f in os.listdir(folder_path)
+        if f.endswith('.parquet') and '2024-01' in f and ('yellow' in f.lower() or 'green' in f.lower())
+    ]
+
+    # Load and concatenate them into a single DataFrame
+    dataframes = [pd.read_parquet(os.path.join(folder_path, file)) for file in parquet_files]
+
+    # Combine all dataframes
+    df = pd.concat(dataframes, ignore_index=True) if dataframes else pd.DataFrame()
+
+    df.to_parquet("all_cleaned_data/combined_cleaned_data_2024-01.parquet", index=False)
+
 #return all cleaned data file as a dataframe
 #df = pd.read_parquet("all_cleaned_data/all_cleaned_data.parquet")
 

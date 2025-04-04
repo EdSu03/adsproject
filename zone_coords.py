@@ -35,3 +35,11 @@ def get_coords_as_dict() -> dict[str, Coords]: # returns a dictionary to map (x,
     df = df.set_index('zone')
     
     return df.T.to_dict()
+
+def get_coord_as_csv():
+    df = get_df()
+
+    df = df[['LocationID', 'x', 'y']]
+    df.columns = ['LocationID', 'Longitude', 'Latitude']
+
+    df.to_csv('zone_coords.csv', index=False)
