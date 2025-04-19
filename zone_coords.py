@@ -38,6 +38,19 @@ def get_coords_as_dict() -> (
     )
 
     # Set zone to index (necessary for to_dict to recognize zone as the key)
+    df = df.set_index('zone')
+    
+    return df.T.to_dict()
+
+def get_coord_as_csv():
+    df = get_df()
+
+    df = df[['LocationID', 'x', 'y']]
+    df.columns = ['LocationID', 'Longitude', 'Latitude']
+
+    df.to_csv('zone_coords.csv', index=False)
+
     df = df.set_index("zone")
 
     return df.T.to_dict()
+

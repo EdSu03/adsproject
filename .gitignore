@@ -1,6 +1,7 @@
 /data
 /cleaned_data
 /all_cleaned_data
+#/data_for_q_learning
 
 # VSCode
 .vscode/*
