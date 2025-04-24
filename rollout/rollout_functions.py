@@ -58,7 +58,7 @@ def stay_strategy(current_zone):
 
 # Main rollout function
 def rollout_one(start_zone, start_time_bin, policy, q_net=None, zone_id_map=None,
-                neighbor_dict=None, trip_df=None, matrix=None, device='cpu', valid_sa_pairs = None):
+                neighbor_dict=None, trip_df=None, matrix=None, device='cpu', valid_sa_pairs = None, xgboost_model=None):
     """
     Perform one rollout simulation starting from a given zone and time bin, under a specified policy.
     """
@@ -100,6 +100,8 @@ def rollout_one(start_zone, start_time_bin, policy, q_net=None, zone_id_map=None
             a_zone = random.choice(trip_df['PULocationID'].unique())
         elif policy == 'stay':
             a_zone = stay_strategy(s_zone)
+        elif policy == 'xgboost':
+            a_zone = round(xgboost_model.predict((s_zone,t_bin)))
         else:
             raise ValueError(f"Unsupported policy: {policy}")
 
