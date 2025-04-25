@@ -60,28 +60,17 @@ def rollout_one(start_zone, start_time_bin, policy, q_net=None, zone_id_map=None
     total_income = 0.0
     bins_elapsed = 0
     max_bins = 32
-    stay_no_trip_counter = 0
+    # stay_no_trip_counter = 0
 
     while bins_elapsed < max_bins:
         # Select action based on policy
         if policy == 'q_learning':
-            # # Filter global zone set by whether (s_zone, a_zone) has been seen
-            # candidates = [a_zone for a_zone in zone_id_map.keys() if (s_zone, a_zone) in valid_sa_pairs]
-            # if not candidates:
-            #     a_zone = s_zone
-            # else:
-            #     s_tensor = torch.tensor([zone_id_map[s_zone]] * len(candidates), dtype=torch.long).to(device)
-            #     t_tensor = torch.tensor([t_bin] * len(candidates), dtype=torch.long).to(device)
-            #     a_tensor = torch.tensor([zone_id_map[a] for a in candidates], dtype=torch.long).to(device)
-            #     with torch.no_grad():
-            #         q_values = q_net(s_tensor, t_tensor, a_tensor)
-            #         # print(q_values)
-            #     best_idx = torch.argmax(q_values).item()
-            #     a_zone = candidates[best_idx]
             candidates = neighbor_dict.get(s_zone, [s_zone])
             candidates = [a for a in candidates if a in zone_id_map]
             if not candidates:
                 candidates = [s_zone]
+            if s_zone not in zone_id_map:
+                continue
             s_tensor = torch.tensor([zone_id_map[s_zone]] * len(candidates), dtype=torch.long).to(device)
             t_tensor = torch.tensor([t_bin] * len(candidates), dtype=torch.long).to(device)
             a_tensor = torch.tensor([zone_id_map[a] for a in candidates], dtype=torch.long).to(device)
@@ -128,19 +117,6 @@ def rollout_one(start_zone, start_time_bin, policy, q_net=None, zone_id_map=None
         else:
             t_bin = (t_bin + 1) % 96
             bins_elapsed += 1
-            stay_no_trip_counter += 1
-            if stay_no_trip_counter >= 2 and policy == 'q_learning':
-                candidates = neighbor_dict.get(s_zone, [s_zone])
-                candidates = [zone for zone in candidates if (zone != s_zone) and (zone in zone_id_map)]
-                if candidates:
-                    a_zone = random.choice(candidates)
-                    empty_distance, empty_duration = get_empty_distance_and_time(s_zone, a_zone, matrix)
-                    empty_cost = empty_distance * 0.5
-                    total_income -= empty_cost
-                    t_bin, bins_used = advance_time_bin(t_bin, empty_duration)
-                    bins_elapsed += bins_used
-                    s_zone = a_zone
-                stay_no_trip_counter = 0  # reset counter after forced move
 
     return total_income
 
@@ -262,7 +238,7 @@ def batch_rollout(num_samples, q_net, zone_id_map, neighbor_dict, trip_df, matri
     if not random_choose:
 
         start_zones = list(zone_id_map.keys())
-        start_time_bin = 40  # 10am
+        start_time_bin = 88  # 10am
         for start_zone in tqdm(start_zones, desc="Rollout for each zone"):
             for policy in policies:
                 income = rollout_one(
@@ -279,13 +255,9 @@ def batch_rollout(num_samples, q_net, zone_id_map, neighbor_dict, trip_df, matri
                 results[policy].append(income)
     else:
         available_zones = trip_df['PULocationID'].unique()
-        # high_demand_zones = [
-        #     132, 138, 161, 237, 230
-        # ]
-        # available_time_bins = trip_df['pickup_time_bin'].unique()
-        for _ in range(num_samples):
+        for i in tqdm(range(num_samples), desc="Random rollout"):
             start_zone = int(random.choice(available_zones))
-            start_time_bin = 40
+            start_time_bin = 88
 
             for policy in policies:
                 income = rollout_one(start_zone, start_time_bin, policy,

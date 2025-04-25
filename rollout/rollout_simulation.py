@@ -18,7 +18,7 @@ def get_time_bin(timestamp):
 def main():
     # === Step 1: Paths ===
     trip_data_path = '../cleaned_data/cleaned_yellow_tripdata_2024-03.parquet'
-    q_network_model_path = '../Q_learning/q_network_realistic_20_epochs_v3.pt'
+    q_network_model_path = '../Q_learning/q_network_trip2trip_20_epochs.pt'
     intra_zone_matrix_path = '../intra_zone_matrix.npy'
     neighbor_dict_path = '../neighbor_dict_10.json'
 
@@ -42,7 +42,7 @@ def main():
     print("✅ Intra-zone distance matrix loaded.")
 
     # === Step 5: Prepare zone_id_map and inv_zone_map ===
-    samples_path = '../data_for_q_learning/q_learning_samples_penalty_2024-01_02.csv'
+    samples_path = '../data_for_q_learning/q_learning_trip_to_trip_penalty_2024-01.csv'
     df = pd.read_csv(samples_path)
 
     # Encode all zone IDs into continuous integer IDs
@@ -73,7 +73,7 @@ def main():
         trip_df=trip_df,
         matrix=intra_zone_matrix,
         device=device,
-        random_choose=False
+        random_choose=True
     )
 
     # === Step 8: Summarize and print results === #
@@ -92,13 +92,13 @@ def main():
     #     221
     # ]
     # available_zones = trip_df['PULocationID'].unique()
-    # start_zone = random.choice(high_demand_zones)
+    # start_zone = random.choice(available_zones)
     # start_time_bin = random.choice(trip_df['pickup_time_bin'].unique())
     #
-    # q_data = pd.read_csv('../data_for_q_learning/q_learning_samples_realistic_2024-01_02.csv')
-    #
-    # valid_sa_pairs = set(zip(q_data['s_zone'], q_data['a_zone']))
-    # print(f"✅ Loaded {len(valid_sa_pairs)} valid (s, a) pairs from training data.")
+    # # q_data = pd.read_csv('../data_for_q_learning/q_learning_samples_realistic_2024-01_02.csv')
+    # #
+    # # valid_sa_pairs = set(zip(q_data['s_zone'], q_data['a_zone']))
+    # # print(f"✅ Loaded {len(valid_sa_pairs)} valid (s, a) pairs from training data.")
     #
     # print(f"\n=== Debugging rollout starting at Zone {start_zone}, TimeBin {start_time_bin} ===")
     #
@@ -112,11 +112,10 @@ def main():
     #     trip_df=trip_df,
     #     matrix=intra_zone_matrix,
     #     device='cpu',
-    #     valid_sa_pairs = valid_sa_pairs
     # )
 
 
 if __name__ == "__main__":
     main()
-    # plot_results()
+    plot_results()
 
