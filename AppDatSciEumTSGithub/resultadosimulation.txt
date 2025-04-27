@@ -1,0 +1,43 @@
+0
+C:\Users\mfran\AppData\Local\Temp\ipykernel_25172\2181129911.py:14: UserWarning: Discarding nonzero nanoseconds in conversion.
+  r_time = ro.POSIXct([ts.to_pydatetime()])
+Average hourly revenue for seed 42: $52.23
+1
+Average hourly revenue for seed 43: $41.79
+2
+Average hourly revenue for seed 44: $46.56
+3
+Average hourly revenue for seed 45: $56.75
+4
+Average hourly revenue for seed 46: $47.51
+5
+Average hourly revenue for seed 47: $45.76
+6
+Average hourly revenue for seed 48: $44.09
+7
+Average hourly revenue for seed 49: $48.67
+8
+Average hourly revenue for seed 50: $51.49
+9
+Average hourly revenue for seed 51: $45.76
+10
+Average hourly revenue for seed 52: $47.29
+11
+Average hourly revenue for seed 53: $49.27
+12
+Average hourly revenue for seed 54: $44.89
+13
+Average hourly revenue for seed 55: $49.37
+14
+Average hourly revenue for seed 56: $45.04
+15
+Average hourly revenue for seed 57: $46.75
+16
+Average hourly revenue for seed 58: $47.60
+17
+Average hourly revenue for seed 59: $45.08
+18
+Average hourly revenue for seed 60: $48.97
+19
+Average hourly revenue for seed 61: $47.54
+Average hourly revenue: $47.62
